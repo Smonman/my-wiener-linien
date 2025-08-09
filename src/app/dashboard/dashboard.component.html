@@ -1,0 +1,8 @@
+<div>
+  <!-- status -->
+  <div>
+    @for (monitor of monitors; track monitor) {
+      <app-monitor [diva]="monitor.diva" [lineName]="monitor.lineName"></app-monitor>
+    }
+  </div>
+</div>

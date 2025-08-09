@@ -1,0 +1,15 @@
+@if (monitorSignal()) {
+  <div>
+    <div>
+      <div>{{ lineSignal().name | uppercase }}</div>
+      <div>
+        @for (direction of monitorSignal().directions; track direction.index) {
+          <div>
+            <div>{{ direction.towards }}</div>
+            <div><span>{{ direction.nextArrivalTime }}</span> min</div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

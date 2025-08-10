@@ -1,5 +1,5 @@
 export type Direction = {
-  index: number,
+  directionId: number,
   towards: string,
   nextArrivalTime: Date
 }

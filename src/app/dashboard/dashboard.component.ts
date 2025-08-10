@@ -1,6 +1,8 @@
-import { Component } from "@angular/core";
+import { AfterViewInit, Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { MonitorComponent } from "../monitor/monitor.component";
-import { MonitorRequestDto } from "../../models/monitor";
+import { MonitorDescriptor } from "../../models/monitor-descriptor";
+import { MonitorService } from "../services/monitor.service";
+import { ReferenceService } from "../services/reference.service";
 
 @Component({
   selector: "app-dashboard",
@@ -10,10 +12,23 @@ import { MonitorRequestDto } from "../../models/monitor";
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.css"
 })
-export class DashboardComponent {
-  protected monitors: MonitorRequestDto[] = [
-    { diva: "60201921", lineName: "42" },
-    { diva: "60201426", lineName: "9" },
-    { diva: "60200874", lineName: "U6" },
-  ]
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  protected monitorDescriptors: MonitorDescriptor[] = []
+  private referenceService: ReferenceService = inject(ReferenceService);
+  private monitorService: MonitorService = inject(MonitorService);
+
+  ngOnInit(): void {
+    this.monitorDescriptors.push(this.referenceService.getMonitorDescriptor("60201921", "42"));
+    this.monitorDescriptors.push(this.referenceService.getMonitorDescriptor("60201426", "9"));
+    this.monitorDescriptors.push(this.referenceService.getMonitorDescriptor("60200874", "U6"));
+  }
+
+  ngAfterViewInit(): void {
+    this.monitorService.start();
+  }
+
+  ngOnDestroy(): void {
+    this.monitorService.stop();
+  }
 }

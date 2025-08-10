@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "https://www.wienerlinien.at",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

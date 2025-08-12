@@ -1,8 +1,8 @@
 import { inject, Injectable, OnDestroy, signal, Signal, WritableSignal } from "@angular/core";
 import { Monitor } from "../../models/monitor";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { LineDto, MonitorDto, MonitorResponseDto } from "../../dtos/monitor-response.dto";
-import { Observable, tap } from "rxjs";
+import { DepartureDto, LineDto, MonitorDto, MonitorResponseDto } from "../../dtos/monitor-response.dto";
+import { map, Observable, tap } from "rxjs";
 import { MonitorDescriptor } from "../../models/monitor-descriptor";
 import { Line } from "../../models/line";
 import { Direction } from "../../models/direction";
@@ -93,7 +93,6 @@ export class MonitorService implements OnDestroy {
    */
   private mapRawMonitors(response: MonitorResponseDto): Map<MonitorDescriptor, Monitor> {
     const result = new Map<MonitorDescriptor, Monitor>();
-    console.log(response);
     const stations: Multimap<string, MonitorDto> = new Multimap<string, MonitorDto>;
     response.data.monitors.forEach(monitor => {
       const stopTitle: string = monitor.locationStop.properties.title;
@@ -168,7 +167,21 @@ export class MonitorService implements OnDestroy {
     let params = new HttpParams();
     this.monitorRequests.forEach((monitorDescriptor: MonitorDescriptor) => {
       params = params.append("diva", monitorDescriptor.diva);
-    });
-    return this.http.get<MonitorResponseDto>(`${MonitorService.BASE_URL}/${MonitorService.MONITORS_ENDPOINT}`, { params: params });
+    })
+    return this.http.get<MonitorResponseDto>(`${MonitorService.BASE_URL}/${MonitorService.MONITORS_ENDPOINT}`, { params: params })
+      .pipe(
+        map((response: MonitorResponseDto): MonitorResponseDto => {
+          response.message.serverTime = new Date(response.message.serverTime);
+          response.data.monitors.forEach((monitor: MonitorDto) => {
+            monitor.lines.forEach((line: LineDto) => {
+              line.departures.departure.forEach((departure: DepartureDto) => {
+                departure.departureTime.timePlanned = new Date(departure.departureTime.timePlanned);
+                departure.departureTime.timeReal = new Date(departure.departureTime.timeReal);
+              });
+            })
+          })
+          return response;
+        })
+      )
   }
 }

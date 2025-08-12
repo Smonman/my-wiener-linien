@@ -25,7 +25,13 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   protected getCountdown(nextArrivalTime: Date): number {
-    // TODO: fix nextArrivalTime not being date.
-    return new Date(nextArrivalTime).getTime() - new Date().getTime();
+    const minutes = ((nextArrivalTime.getTime() - new Date().getTime()) / 1000 / 60);
+    if (minutes <= 0) {
+      return 0;
+    } else if (minutes <= 1) {
+      return 1;
+    } else {
+      return Math.floor(minutes);
+    }
   }
 }

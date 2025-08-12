@@ -1,12 +1,12 @@
 import { Component, inject, input, InputSignal, OnDestroy, OnInit, Signal } from "@angular/core";
-import { JsonPipe, UpperCasePipe } from "@angular/common";
+import { TitleCasePipe, UpperCasePipe } from "@angular/common";
 import { MonitorService } from "../services/monitor.service";
 import { Monitor } from "../../models/monitor";
 import { MonitorDescriptor } from "../../models/monitor-descriptor";
 
 @Component({
   selector: "app-monitor",
-  imports: [UpperCasePipe, JsonPipe],
+  imports: [UpperCasePipe, TitleCasePipe],
   templateUrl: "./monitor.component.html",
   styleUrl: "./monitor.component.css"
 })
@@ -22,5 +22,10 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.monitorService.deregister(this.monitorDescriptor());
+  }
+
+  protected getCountdown(nextArrivalTime: Date): number {
+    // TODO: fix nextArrivalTime not being date.
+    return new Date(nextArrivalTime).getTime() - new Date().getTime();
   }
 }

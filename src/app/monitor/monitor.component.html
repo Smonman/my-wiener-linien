@@ -1,13 +1,12 @@
 @if (monitorSignal && monitorSignal()) {
-  <div style="background-color: aquamarine">{{ this.monitorSignal() | json }}</div>
-  <div>
-    <div>
-      <div>{{ monitorDescriptor().line | uppercase }}</div>
-      <div>
+  <div class="bg-red-500 text-white p-2 px-4 rounded-lg">
+    <div class="flex flex-row content-stretch gap-3">
+      <div class="self-center-safe font-extrabold">{{ monitorDescriptor().line | uppercase }}</div>
+      <div class="flex flex-col flex-grow">
         @for (direction of monitorSignal()?.directions; track direction.directionId) {
-          <div>
-            <div>{{ direction.towards }}</div>
-            <div><span>{{ direction.nextArrivalTime }}</span> min</div>
+          <div class="flex flex-row justify-between">
+            <div>{{ direction.towards | titlecase }}</div>
+            <div><span class="font-bold">{{ getCountdown(direction.nextArrivalTime) }}</span> min</div>
           </div>
         }
       </div>

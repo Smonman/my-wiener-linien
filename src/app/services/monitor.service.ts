@@ -2,7 +2,7 @@ import { inject, Injectable, OnDestroy, signal, Signal, WritableSignal } from "@
 import { Monitor } from "../../models/monitor";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { DepartureDto, LineDto, MonitorDto, MonitorResponseDto } from "../../dtos/monitor-response.dto";
-import { map, Observable, tap } from "rxjs";
+import { map, Observable, Subscription, tap, timer } from "rxjs";
 import { MonitorDescriptor } from "../../models/monitor-descriptor";
 import { Line } from "../../models/line";
 import { Direction } from "../../models/direction";
@@ -16,11 +16,14 @@ export class MonitorService implements OnDestroy {
 
   private static readonly BASE_URL: string = "/api/ogd_realtime"
   private static readonly MONITORS_ENDPOINT: string = "monitor";
+  private static readonly INTERVAL: number = 60 / 3;
   private referenceService: ReferenceService = inject(ReferenceService);
   private http: HttpClient = inject(HttpClient);
   private monitorRequests: Set<MonitorDescriptor> = new Set<MonitorDescriptor>();
   private signals: Map<MonitorDescriptor, WritableSignal<Monitor | null>> = new Map();
   private isRunning: boolean = false;
+  private interval: Observable<number> = timer(0, MonitorService.INTERVAL * 1000).pipe(tap(() => this.fetchMonitors()));
+  private intervalSubscription: Subscription | undefined;
 
   ngOnDestroy(): void {
     this.stop();
@@ -52,16 +55,16 @@ export class MonitorService implements OnDestroy {
    */
   start(): void {
     if (this.isRunning) return;
-    // TODO: fetch data each 15 seconds
-    this.fetchMonitors();
+    this.intervalSubscription = this.interval.subscribe();
+    this.isRunning = true;
   }
 
   /**
    * Stops this service.
    */
   stop(): void {
+    this.intervalSubscription?.unsubscribe();
     this.isRunning = false;
-    // TODO: stop fetching
   }
 
   private isRequested(monitorDescriptor: MonitorDescriptor): boolean {

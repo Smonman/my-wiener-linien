@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@theme {
+  --color-bim: rgb(211, 49, 44);
+  --color-bus: rgb(28, 96, 167);
+  --color-u1: rgb(226, 2, 16);
+  --color-u2: rgb(147, 94, 152);
+  --color-u3: rgb(219, 118, 9);
+  --color-u4: rgb(49, 159, 73);
+  --color-u5: rgb(0, 142, 147);
+  --color-u6: rgb(164, 100, 44);
+  --color-wlb: rgb(0, 93, 149);
+  --color-sb: rgb(0, 157, 221);
+}

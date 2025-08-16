@@ -1,5 +1,5 @@
-<div>
-  <!-- TODO: status -->
+<div class="mt-3">
+  <app-status></app-status>
   <div class="flex flex-col gap-y-2 my-4">
     @for (monitorDescriptor of monitorDescriptors; track monitorDescriptor) {
       <app-monitor [monitorDescriptor]="monitorDescriptor"></app-monitor>

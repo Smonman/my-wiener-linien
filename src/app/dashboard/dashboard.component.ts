@@ -3,11 +3,13 @@ import { MonitorComponent } from "../monitor/monitor.component";
 import { MonitorDescriptor } from "../../models/monitor-descriptor";
 import { MonitorService } from "../services/monitor.service";
 import { ReferenceService } from "../services/reference.service";
+import { StatusComponent } from "../status/status.component";
 
 @Component({
   selector: "app-dashboard",
   imports: [
-    MonitorComponent
+    MonitorComponent,
+    StatusComponent
   ],
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.css"

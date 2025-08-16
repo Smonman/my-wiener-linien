@@ -2,7 +2,7 @@ import { inject, Injectable, OnDestroy, signal, Signal, WritableSignal } from "@
 import { Monitor } from "../../models/monitor";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { DepartureDto, LineDto, MonitorDto, MonitorResponseDto } from "../../dtos/monitor-response.dto";
-import { map, Observable, Subscription, tap, timer } from "rxjs";
+import { map, Observable, Subject, Subscription, tap, timer } from "rxjs";
 import { MonitorDescriptor } from "../../models/monitor-descriptor";
 import { Line } from "../../models/line";
 import { Direction } from "../../models/direction";
@@ -24,6 +24,11 @@ export class MonitorService implements OnDestroy {
   private isRunning: boolean = false;
   private interval: Observable<number> = timer(0, MonitorService.INTERVAL * 1000).pipe(tap(() => this.fetchMonitors()));
   private intervalSubscription: Subscription | undefined;
+  private updateSubject: Subject<void> = new Subject<void>();
+
+  get $update(): Observable<void> {
+    return this.updateSubject.asObservable();
+  }
 
   ngOnDestroy(): void {
     this.stop();
@@ -80,6 +85,7 @@ export class MonitorService implements OnDestroy {
    * @private
    */
   private updateSignals(monitors: Map<MonitorDescriptor, Monitor>): void {
+    this.updateSubject.next();
     monitors.forEach((monitor: Monitor, monitorDescriptor: MonitorDescriptor) => {
       const signal: WritableSignal<Monitor | null> | undefined = this.signals.get(monitorDescriptor);
       if (signal) {

@@ -33,19 +33,19 @@ export class MonitorComponent implements OnInit, OnDestroy {
           classes.push(this.getUndergroundColor(this.monitorSignal()?.line.name));
           break;
         case LineType.TRAM:
-          classes.push("bg-bim");
+          classes.push("border-bim");
           break;
         case LineType.WLB:
-          classes.push("bg-wlb");
+          classes.push("border-wlb");
           break;
         case LineType.BUS:
-          classes.push("bg-bus");
+          classes.push("border-bus");
           break;
         case LineType.NIGHT_LINE:
-          classes.push("bg-bus");
+          classes.push("border-bus");
           break;
         case LineType.S_LINE:
-          classes.push("bg-sb");
+          classes.push("border-sb");
           break;
       }
     }
@@ -55,17 +55,17 @@ export class MonitorComponent implements OnInit, OnDestroy {
   protected getUndergroundColor(lineName: string | undefined | null): string {
     switch (lineName?.toUpperCase()) {
       case "U1":
-        return "bg-u1";
+        return "border-u1";
       case "U2":
-        return "bg-u2";
+        return "border-u2";
       case "U3":
-        return "bg-u3";
+        return "border-u3";
       case "U4":
-        return "bg-u4";
+        return "border-u4";
       case "U5":
-        return "bg-u5";
+        return "border-u5";
       case "U6":
-        return "bg-u6";
+        return "border-u6";
     }
     return ""
   }

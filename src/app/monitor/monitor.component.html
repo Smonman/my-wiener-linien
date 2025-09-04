@@ -1,7 +1,7 @@
 @if (monitorSignal && monitorSignal()) {
-  <div class="text-white p-2 px-4 rounded-lg" [class]="monitorClasses()">
+  <div class="p-2 px-4 rounded-lg border-4" [class]="monitorClasses()">
     <div class="flex flex-row content-stretch gap-3">
-      <div class="self-center-safe font-extrabold">{{ monitorDescriptor().line | uppercase }}</div>
+      <div class="self-center-safe font-bold text-3xl">{{ monitorDescriptor().line | uppercase }}</div>
       <div class="flex flex-col flex-grow">
         @for (direction of monitorSignal()?.directions; track direction.directionId) {
           <div class="flex flex-row justify-between">

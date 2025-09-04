@@ -6,8 +6,7 @@
         @for (direction of monitorSignal()?.directions; track direction.directionId) {
           <div class="flex flex-row justify-between">
             <div>{{ direction.towards | titlecase }}</div>
-            <!-- TODO: show ? for NaN -->
-            <div><span class="font-bold">{{ getCountdown(direction.nextArrivalTime) }}</span> min</div>
+            <div><span class="font-bold">{{ getCountdown(direction.nextArrivalTime) | safeNumber }}</span> min</div>
           </div>
         }
       </div>

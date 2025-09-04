@@ -4,10 +4,11 @@ import { MonitorService } from "../services/monitor.service";
 import { Monitor } from "../../models/monitor";
 import { MonitorDescriptor } from "../../models/monitor-descriptor";
 import { LineType } from "../../models/line";
+import { SafeNumberPipe } from "../pipes/safe-number.pipe";
 
 @Component({
   selector: "app-monitor",
-  imports: [UpperCasePipe, TitleCasePipe],
+  imports: [UpperCasePipe, TitleCasePipe, SafeNumberPipe],
   templateUrl: "./monitor.component.html",
   styleUrl: "./monitor.component.css"
 })
